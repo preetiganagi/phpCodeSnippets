@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2> successfull registration </h2>
+<?php
+ if ($_SERVER["REQUEST_METHOD"] == "POST") 
+    {
+        if(empty($nameErr) && empty($emailErr) && empty($genderErr) && empty($subjectErr) && empty($pwdErr) && empty($contryCodeErr) && empty($phoneNumberErr) && empty($passwordMsg) && empty($pinERR) && empty($stateERR) && empty($countryERR) && empty($cityERR))
+        {
+            echo "<h2 style=\"color:green;\">Registered successfully</h2>";
+            echo "<h2 style=\"color:blue;\">Your Input:</h2>";
+
+            echo "<h4>Name is : ",$name;
+            echo "<br>";
+            echo "email is : ",$email;
+            echo "<br>";
+
+            echo "comments : ",$comment;
+            echo "<br>";
+
+            echo "genderis : ",$gender;
+            echo "<br>";
+            echo "phoneNumber : ",$contryCode."-".$phoneNumber;
+            echo "<br>";
+            echo "<br>";
+            echo "address is:<br>";
+            echo "country : ",$countryName;
+            echo ",  ";
+            echo "state : ",$stateName;
+            echo ",    ";
+            echo "city : ",$cityName;
+            echo "    ";
+             echo "pincode : ",$pinCode;
+            echo "<br>";
+            echo "hobbies are<br>";
+            foreach ($_POST['hobby'] as $key => $hobby) {
+            	echo $key+1,")",$hobby,"<br>";
+
+            }
+            echo "<br>Subjects are <br>";
+
+            foreach ($_POST['subject'] as $key => $subject) {
+            	//print_r($subject);
+            	echo $key+1,")",$subject,"<br>";
+            }
+
+        }
+        ?>
+</body>
+</html>

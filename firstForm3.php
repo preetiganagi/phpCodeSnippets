@@ -22,7 +22,6 @@
     
 
 
-
     ?>
 <!-- <h2>User Registration Form</h2> -->
 <p><span>* required field.</span></p>

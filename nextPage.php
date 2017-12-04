@@ -167,7 +167,11 @@
             echo "    ";
              echo "pincode : ",$pinCode;
             echo "<br>";
+include("dbconnect.php");
+$dbObj = new DBController();         
             echo "hobbies are<br>";
+
+            
             foreach ($_POST['hobby'] as $key => $hobby) {
                 echo $key+1,")",$hobby,"<br>";
 
@@ -178,17 +182,9 @@
                 //print_r($subject);
                 echo $key+1,")",$subject,"<br>";
             }
-
-           $userInfoQuery = "INSERT INTO userinformationdemo(userName,password,pincode,email,gender,city) values ('$name','$password','$pinCode','$email','$gender','$cityName')";
-
-			include("dbconnect.php");
-
-   			$dbObj = new DBController();
-   			 
-   			/*$userResult=$dbObj->runQuery($userInfoQuery);
-   			*/
-
-   			$userResult = mysqli_query($dbObj->connectDB(),$userInfoQuery);
+          
+        $userInfoQuery = "INSERT INTO userinformationdemo(userName,password,pincode,email,gender,city) values ('$name','$password','$pinCode','$email','$gender','$cityName')"; 
+        $userResult = mysqli_query($dbObj->connectDB(),$userInfoQuery);
    			if($userResult)
    			{
    				echo "<h3>saved to database</h3>";
@@ -197,26 +193,43 @@
    				echo "some problem happened";
    			}
 
-
-   			$userIdQuery = "select userId from userinformationdemo where userName =".$name."";
-            $userIdResult =$dbObj->runQuery($userIdQuery);
+        $userIdQuery = "select userId from userinformationdemo where userName ='".$name."'";
+            $userIdResult =mysqli_query($dbObj->connectDB(),$userIdQuery);
             //print_r($userIdResult);
-            foreach ($userIdResult as $user)
-            { 
-                foreach ($_POST['hobby'] as $key => $hobby) {
-                    $insertHobbies = "INSERT INTO userhobbies (userId,hobbyId) values (".$user['userId'].",".$hobby.")";
-                    $insertHobbyResult=$dbObj->runQuery($insertHobbies);
-
-                    if($insertHobbyResult)
+            if ($_SERVER["REQUEST_METHOD"] == "POST") 
+            {
+                while($userId=mysqli_fetch_assoc($userIdResult))
+                { 
+                  foreach ($_POST['hobby'] as $key => $hobby) {
+                    $insertHobbies = "INSERT INTO userhobbies (userId,hobbyId) values (".$userId['userId'].",".$hobby.")";
+                    $insertHobbyResult=mysqli_query($dbObj->connectDB(),$insertHobbies);
+                    //echo $insertHobbies;
+                    /*if($insertHobbyResult)
                     {
-                        echo "hobbies added";
-
+                    echo "hobbies added";    
                     }
                     else {
                         echo "not saved to database";
+                    }*/
+                  }
+                  echo "<h3>hobbies added</h3>";
+                  
+                  //iserting courses to database
+                  foreach ($_POST['subject'] as $key => $subject) {
+                    $insertSubjects = "INSERT INTO usersubjects (userId,techId) values (".$userId['userId'].",".$subject.")";
+                    $insertSubjectResult=mysqli_query($dbObj->connectDB(),$insertSubjects);
+                    //echo $insertHobbies;
+                    /*if($insertSubjectResult)
+                    {
+                     echo "<h3>subjects are added</h3>";
                     }
+                    else {
+                        echo "not saved to database";
+                    }*/
+                  }
+                  echo "<h3>subjects are added</h3>";
+                 
                 }
-
             }
 
         }

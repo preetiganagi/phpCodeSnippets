@@ -103,7 +103,7 @@ session_start();
 	}
 }
 ?>
-	<h4>users registered <a href="registredUsers.php">click here</a>  
+	<h4>users registered <a href="apiuser.php">click here</a>  
 
 </body>
 </html>

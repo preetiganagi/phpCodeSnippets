@@ -3,7 +3,7 @@ class DBController {
 	private $host = "localhost";
 	private $user = "root";
 	private $password = "compass";
-	private $database = "userdatabase";
+	private $database = "employeedatabase";
 	private $conn;
 	
 	function __construct() {
@@ -28,6 +28,10 @@ class DBController {
 		$result  = mysqli_query($this->conn,$query);
 		$rowcount = mysqli_num_rows($result);
 		return $rowcount;	
+	}
+	function runInsertQuery($query) {
+		$result = mysqli_query($this->conn,$query);
+		return $result;
 	}
 }
 ?>

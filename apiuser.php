@@ -1,6 +1,8 @@
 
 <?php
-session_start();
+header("Access-Control-Allow-Origin: *"); 
+header("Content-Type: application/json_encode($checkUserResult); charset=UTF-8");
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -9,8 +11,6 @@ session_start();
 </head>
 <body>
 	<?php
-		echo  "<h2>Hi   ",$_SESSION['userName'],"</h2>";
-
 		$checkUserQuery = "select * from userinformation";
 		$conn = mysqli_connect("localhost","root","compass","sessiondatabase");
 		echo mysqli_error($conn);
@@ -20,13 +20,20 @@ session_start();
 		if(mysqli_num_rows($checkUserResult)>0)
 		{	
 			echo "<h3>Registered users are :".mysqli_num_rows($checkUserResult)."</h3>";
-			while ($result = mysqli_fetch_assoc($checkUserResult)) {
+			
 				
 				echo "<h4>";
+				foreach ($checkUserResult as $value) {
+					foreach ($value as $key => $value) {
+						echo $key." => ".$value;
+				
+					}
 
-				echo $result['username'],"</h4>";
+					
+				}
+			echo "</h4>";
 
-			}
+			
 		}
 
 
@@ -35,6 +42,5 @@ session_start();
 	<form method= 'post' action='userLogin.php'>
 		<input type="submit" value="Logout"><br>
 	</form>
-
 </body>
 </html>

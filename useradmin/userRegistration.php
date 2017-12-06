@@ -1,34 +1,15 @@
-
- <?php
-session_start();
-?> 
 <!DOCTYPE html>
 <html>
-<?php
-session_start();
-?>
-
 <head>
 	<title></title>
 </head>
 <body>
-	<?php
-	if ($_SERVER["REQUEST_METHOD"] == "POST") 
-    {
-        $_SESSION['userName'] = $_POST['name'];
-		echo  "<h2>Welcome   ".$_SESSION['userName']."</h2>";
-	}
-	else
-	{	
-	echo  "<h2>Welcome   ".$_SESSION['userName']."</h2>";
-	}
-	?>
-	<?php
+    <?php
 
-	 $nameErr = $emailErr =$pwdErr = $cpwdErr =  $phoneNumberErr = $contryCode = "";
+     $nameErr = $emailErr =$pwdErr = $cpwdErr =  $phoneNumberErr = $contryCode = "";
     $name = $email =$pwd = $cpwd = $phoneNumber = $contryCode ="";
-	
-  	if ($_SERVER["REQUEST_METHOD"] == "POST") 
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST") 
     {
 
         if (empty($_POST["name"])) {
@@ -85,29 +66,41 @@ session_start();
         } else {
             $cpwd =($_POST["confirmPassword"]);
         }
-	
-	$conn = mysqli_connect("localhost","root","compass","sessiondatabase");
-	if($conn){
-		$insertUserInfo = "INSERT INTO userinformation (username,password,phonenumber,email) 
-        VALUES ('$name','$pwd','$phoneNumber','$email')";
-		//echo $insertUserInfo;
-		$result = mysqli_query($conn,$insertUserInfo) or die("<br><br>".mysqli_error($conn));
-		if($result)
-		{
-			echo "inserted in database";
-		}
-        else
-        {
-            echo "not inserted";
-        }
-	}
+
+    include("userclass.php");
+    $userObj = new User($name,$email,$phoneNumber,$pwd,2);
+    $success= $userObj->registration($userObj);
+    if($success)
+    {
+        header("location:userLogin.php?msg=success fully registered");
+        //echo "registered successfully";
+    }
+    else
+    {
+        echo "not registered";
+    }
+   
 }
 ?>
-	<h4>users registered <a href="apiuser.php">click here</a>  
+	
+<form method="post" action="">  
+    User Name: <input type="text" name="name" value="<?php echo $name;?>">
+ 
+    <br> <br>
+    E-mail: <input type="text" name="email" value="<?php echo $email;?>">
+    <span >*</span>
+    <br> <br>
+    Password: <input type="password" name="password" ><br><br>
+    Confirm Password: <input type="password" name="confirmPassword"><span style="color:red;" ><?php echo $passwordMsg;?></span>
+    <br> <br>
+     Mobile Number:  <input type="text" name="contryCode" value="<?php echo $contryCode;?>" size=5px maxlength=3 placeholder="+91">&nbsp;<input type="text" name="phoneNumber" value="<?php echo $phoneNumber;?>" maxlength=10>
+  
+    <br> <br>
+    <input type="submit" value="submit">&nbsp;
+</form>
+
+
+
 
 </body>
 </html>
-
-
-
-

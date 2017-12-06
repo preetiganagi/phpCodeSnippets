@@ -7,20 +7,18 @@
 </head>
 <body>
 <?php
-
+	if ($_SERVER["REQUEST_METHOD"] == "POST") 
+    {
     	$name = $_POST['name'];
-		$checkUserQuery = "select userid,username,password from userinformation where username='$name'
-";
-		$conn = mysqli_connect("localhost","root","compass","sessiondatabase");
-		echo mysqli_error($conn);
-		$checkUserResult = mysqli_query($conn,$checkUserQuery);
-		//echo mysqli_num_rows($checkUserResult);
-		
-		if(mysqli_num_rows($checkUserResult)>0)
+		$checkUserQuery = "select userid,username,password from userinformation where username='$name'";
+		include("dbconnect.php");
+		$dbObj = new DBController();
+		$result = $dbObj->runQuery($checkUserQuery);
+		if(sizeof($result)>0)
 		{	
 
-			while ($result = mysqli_fetch_assoc($checkUserResult)) {
-				if($result['username'] == $name && $result['password'] == md5($_POST['password'])) 
+			foreach ($result as $key => $value) {
+				if($value['username'] == $name && $value['password'] == md5($_POST['password'])) 
 				{
 				session_start();
 				$_SESSION['userName'] = $name;
@@ -30,16 +28,19 @@
 					$passwordErr ="password not matched";
 				}
 			}
+
 		}
-		
-	
-?>
-<?php
+		if (empty($name) || empty($_POST['password'])) {
+
+			$passwordErr ="password not matched";
+		}
+	}	
 	if ($_SERVER["REQUEST_METHOD"] == "POST") 
     {
     
 		echo "<h2>logged out successfully</h2>";
 	}
+
 ?>
 	
 <form method="post" action="">
@@ -53,5 +54,9 @@
  </form>
     <a href="userRegistration.php">
     <button> Register Here</button></a>
+<?php $msg=$_GET['msg'];
+	echo $msg;
+	?>
 </body>
+
 </html>

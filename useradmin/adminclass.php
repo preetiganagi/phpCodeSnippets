@@ -22,7 +22,18 @@ class Admin extends UserAdmin
 	public function listUsers()
 	{
 		$dbObj = new DBController();
-		$userQuery = "select username ,email,phonenumber,contrycode,userstatus from userinformation";
+		$userQuery = "select username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = 2 and userstatus<>0";
+		$result = $dbObj->runQuery($userQuery);
+		/*if(sizeof($result)>0)
+		{
+			
+		}*/
+		return $result;
+	}
+	public function listAdmins()
+	{
+		$dbObj = new DBController();
+		$userQuery = "select username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = 1";
 		$result = $dbObj->runQuery($userQuery);
 		/*if(sizeof($result)>0)
 		{
@@ -44,10 +55,10 @@ class Admin extends UserAdmin
 			return false;
 		}
 	}
-	public function makeAdmin($id)
+	public function makeAdmin($name)
 	{
 		$dbObj = new DBController();
-		$userQuery="UPDATE userinformation SET roleid=1 WHERE username=$id";
+		$userQuery="UPDATE userinformation SET roleid=1 WHERE username='$name'";
 		$result = $dbObj->runInsertQuery($userQuery);
 		if($result)
 		{
@@ -58,6 +69,35 @@ class Admin extends UserAdmin
 			return false;
 		}
 	}
+	public function removeAdmin($name)
+	{
+		$dbObj = new DBController();
+		$userQuery="UPDATE userinformation SET roleid=2 WHERE username='$name'";
+		$result = $dbObj->runInsertQuery($userQuery);
+		if($result)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	public function changeStatus($name)
+	{
+		$dbObj = new DBController();
+		$userQuery="UPDATE userinformation SET userstatus=0 WHERE username='$name'";
+		$result = $dbObj->runInsertQuery($userQuery);
+		if($result)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 
 	public function findAdminId($name)
 	{

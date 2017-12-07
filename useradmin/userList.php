@@ -24,8 +24,15 @@ session_start();
 
     include("userclass.php");
     $userObj = new User();
-   $users =  $userObj->information($prename);
+  
+   $userid = $userObj->getRegisterId($prename);
+   foreach ($userid as $key => $value) {
+      $id = $value['userid'];
+
+   }
+    $users =  $userObj->information($id);
     ?>
+    <a href="logout.php">Log out</a>
 	<h4>Your Profile</h4>
     <?php  foreach ($users as $key => $user) {
         echo "name Is :".$user['username'];
@@ -34,7 +41,7 @@ session_start();
          echo "<br>";
         echo "phone number Is :".$user['phonenumber'];
     } ?>
-    <br><h4>Edit Profile<a href="editProfile.php?prename=<?php echo $prename; ?>">Click Here</a></h4>
+    <br><h4>Edit Profile<a href="editProfile.php?id=<?php echo $id; ?>">Click Here</a></h4>
 
 </body>
 </html>

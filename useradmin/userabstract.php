@@ -17,13 +17,18 @@ class UserAdmin
 	protected $phoneNumber;
 	protected $password;
 	protected $roleid;
-	function __construct($name,$email,$phNum ,$password,$roleid)
+	protected $concode;
+	protected $status;
+	function __construct($name,$email,$phNum ,$password,$roleid,$concode,$status)
 	{
 		$this->name=$name;
 		$this->email=$email;
 		$this->phoneNumber=$phNum;
 		$this->password=$password;
 		$this->roleid=$roleid;
+		$this->concode=$concode;
+		$this->status=$status;
+		
 	}
 	public function setName($name)
 	{

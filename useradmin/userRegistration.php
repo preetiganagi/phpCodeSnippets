@@ -68,7 +68,7 @@
         }
 
     include("userclass.php");
-    $userObj = new User($name,$email,$phoneNumber,$pwd,2);
+    $userObj = new User($name,$email,$phoneNumber,$pwd,2,$contryCode,1);
     $success= $userObj->registration($userObj);
     if($success)
     {

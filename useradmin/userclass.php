@@ -9,12 +9,13 @@ class User extends UserAdmin
 {
 
 	
-	function __construct($name=null,$email=null,$phNum=null,$password=null,$roleid=null)
+	function __construct($name=null,$email=null,$phNum=null,$password=null,$roleid=null,$concode=null,$status = null)
 	{
-		parent:: __construct($name,$email,$phNum,$password,$roleid);
+		parent:: __construct($name,$email,$phNum,$password,$roleid,$concode,$status);
 	}
 	public function changePassword($pwd)
 	{
+		
 
 	}
 	public function getRegisterId($name)
@@ -28,25 +29,33 @@ class User extends UserAdmin
 	/**
 	* updating profile
 	*/
-	public function editProfile($preName,$name,$email=null,$phNum=null)
+	public function editProfile($id,$name=null,$email=null,$phNum=null)
 	{
 		$flag = false;
 		$dbObj = new DBController();
-		$uid = $this->getRegisterId($preName);
-		foreach ($uid as $key => $value) {
-			if ($email == null && $phNum == null) {
-			$userQuery = " UPDATE userinformation SET username ='$name' WHERE userid=".$value['userid']."";
+		//$uid = $this->getRegisterId($preName);
+	
+			if($name == null && $email == null && $phNum == null){
+				return false;
+			}
+			elseif ($email == null && $phNum == null) {
+			$userQuery = " UPDATE userinformation SET username ='$name' WHERE userid=$id";
 			}
 			elseif($email == null)
 			{
-			$userQuery = " UPDATE userinformation SET username ='$name', phonenumber ='$phNum' WHERE userid=".$value['userid']."";
+			$userQuery = " UPDATE userinformation SET username ='$name', phonenumber ='$phNum' WHERE userid=$id";
 			}
 			elseif ($phNum == null) {
-				$userQuery = " UPDATE userinformation SET username ='$name', email ='$email' WHERE userid=".$value['userid']."";
+				$userQuery = " UPDATE userinformation SET username ='$name', email ='$email' WHERE userid=$id";
 			}
 			elseif ($name == null) {
-				$userQuery = " UPDATE userinformation SET email ='$email',phonenumber ='$phNum' WHERE userid=".$value['userid']."";
+				$userQuery = " UPDATE userinformation SET email ='$email',phonenumber ='$phNum' WHERE userid=$id";
 			}
+			else
+			{
+				$userQuery = " UPDATE userinformation SET username ='$name',email ='$email',phonenumber ='$phNum' WHERE userid=$id";
+			}
+
 
 		
 				$result = $dbObj->runInsertQuery($userQuery);
@@ -58,7 +67,7 @@ class User extends UserAdmin
 			
 			
 		
-		}
+		
 		return $flag;
 		
 		
@@ -70,8 +79,8 @@ class User extends UserAdmin
 	public function registration(User $user)
 	{
 		$dbObj = new DBController();
-      	$insertUserInfo = "INSERT INTO userinformation (username,password,phonenumber,email,roleid) 
-        VALUES ('".$user->name."','".$user->password."','".$user->phoneNumber."','".$user->email."','".$user->roleid."')";
+      	$insertUserInfo = "INSERT INTO userinformation (username,password,phonenumber,email,roleid,contrycode,userstatus) 
+        VALUES ('".$user->name."','".$user->password."','".$user->phoneNumber."','".$user->email."','".$user->roleid."','".$user->concode."',".$user->status.")";
 		//echo $insertUserInfo;
 		$result = $dbObj->runInsertQuery($insertUserInfo);
 		if($result)
@@ -83,10 +92,10 @@ class User extends UserAdmin
             return false;
         }
 	}
-	public function information($name)
+	public function information($id)
 	{
 		$dbObj = new DBController();
-		$userQuery = "select username,phonenumber,email from userinformation where username ='".$name."'";
+		$userQuery = "select username,phonenumber,email,contrycode from userinformation where userid =$id";
 		try
 		{
 			$result = $dbObj->runQuery($userQuery);

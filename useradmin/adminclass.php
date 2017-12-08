@@ -22,7 +22,7 @@ class Admin extends UserAdmin
 	public function listUsers()
 	{
 		$dbObj = new DBController();
-		$userQuery = "select username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = 2 and userstatus<>0";
+		$userQuery = "select userid,username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = 2";
 		$result = $dbObj->runQuery($userQuery);
 		/*if(sizeof($result)>0)
 		{
@@ -30,10 +30,10 @@ class Admin extends UserAdmin
 		}*/
 		return $result;
 	}
-	public function listAdmins()
+	public function listAdmins($name)
 	{
 		$dbObj = new DBController();
-		$userQuery = "select username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = 1";
+		$userQuery = "select username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = 1 and username <>'$name'";
 		$result = $dbObj->runQuery($userQuery);
 		/*if(sizeof($result)>0)
 		{
@@ -41,10 +41,10 @@ class Admin extends UserAdmin
 		}*/
 		return $result;
 	}
-	public function removeUsers($id)
+	public function removeUsers($name)
 	{
 		$dbObj = new DBController();
-		$userQuery = " DELETE FROM userinformation WHERE username=$id";
+		$userQuery = " DELETE FROM userinformation WHERE username='$name'";
 		$result = $dbObj->runInsertQuery($userQuery);
 		if($result)
 		{
@@ -97,6 +97,20 @@ class Admin extends UserAdmin
 			return false;
 		}
 	}
+	public function changeStatusEnable($name)
+	{
+		$dbObj = new DBController();
+		$userQuery="UPDATE userinformation SET userstatus=1 WHERE username='$name'";
+		$result = $dbObj->runInsertQuery($userQuery);
+		if($result)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 
 	public function findAdminId($name)
@@ -122,6 +136,40 @@ class Admin extends UserAdmin
 		catch(Exception $e){
 			//echo $e->getMessage();
 		}
+	}
+	public function editProfile($id,$name=null,$email=null,$phNum=null)
+	{
+		$flag = false;
+		$dbObj = new DBController();
+		//$uid = $this->getRegisterId($preName);
+	
+			if($name == null && $email == null && $phNum == null){
+				return false;
+			}
+			elseif ($email == null && $phNum == null) {
+			$userQuery = " UPDATE userinformation SET username ='$name' WHERE userid=$id";
+			}
+			elseif($email == null)
+			{
+			$userQuery = " UPDATE userinformation SET username ='$name', phonenumber ='$phNum' WHERE userid=$id";
+			}
+			elseif ($phNum == null) {
+				$userQuery = " UPDATE userinformation SET username ='$name', email ='$email' WHERE userid=$id";
+			}
+			elseif ($name == null) {
+				$userQuery = " UPDATE userinformation SET email ='$email',phonenumber ='$phNum' WHERE userid=$id";
+			}
+			else
+			{
+				$userQuery = " UPDATE userinformation SET username ='$name',email ='$email',phonenumber ='$phNum' WHERE userid=$id";
+			}
+				$result = $dbObj->runInsertQuery($userQuery);
+				if($result)
+				{
+				$flag =  true;
+				
+				}
+			return $flag;
 	}
 }
 ?>

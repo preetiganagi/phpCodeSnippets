@@ -55,23 +55,13 @@ class User extends UserAdmin
 			{
 				$userQuery = " UPDATE userinformation SET username ='$name',email ='$email',phonenumber ='$phNum' WHERE userid=$id";
 			}
-
-
-		
 				$result = $dbObj->runInsertQuery($userQuery);
 				if($result)
 				{
 				$flag =  true;
 				
 				}
-			
-			
-		
-		
-		return $flag;
-		
-		
-
+			return $flag;
 	}
 	/**
 	* register profile

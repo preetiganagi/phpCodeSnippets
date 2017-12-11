@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
 <?php
-	if ($_SERVER["REQUEST_METHOD"] == "POST") 
+ function adminLoginValidation(){
+		if ($_SERVER["REQUEST_METHOD"] == "POST") 
     {
     	$name = $_POST['name'];
 		$checkUserQuery = "select * from userinformation where username='$name'";
-		include("dbconnect.php");
+		include("../model/dbconnect.php");
 		$dbObj = new DBController();
 		$result = $dbObj->runQuery($checkUserQuery);
 		if(sizeof($result)>0)
@@ -20,7 +15,7 @@
 					if ($value['roleid'] == 1) {
 						session_start();
 						$_SESSION['userName'] = $name;
-						header("location:registredUsers.php");
+						header("location:../view/registredUsers.php");
 					}
 						else {
 					$passwordErr ="not valid admin";
@@ -30,7 +25,6 @@
 			else {
 					$passwordErr ="not matched";
 				}
-
 		}
 	}
 		if (empty($name) || empty($_POST['password'])) {
@@ -39,19 +33,16 @@
 				}
 		
 	}
+	require "../view/adminLogin.php";
+}
+adminLoginValidation();
+
+function registeredUsersUpdate(){
+
+
+	
+}
+
+
+
 ?>
-<form method="post" action="">
-    Name: <input type="text" name="name">
-    <br> <br>
-    Password: <input type="password" name="password" >
-    <?php echo $passwordErr; ?>
-    <br><br>
-   
-    <input type="submit" value="Login"></a><br>
- </form>
- 
-<?php $msg=$_GET['msg'];
-	echo $msg;
-	?>
-</body>
-</html>

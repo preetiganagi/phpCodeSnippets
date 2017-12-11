@@ -24,13 +24,12 @@ session_start();
 	$name ="";
 		echo  "<h2>Hi   ",$_SESSION['userName'],"</h2>";
 		$adminName =$_SESSION['userName'];
-		//$checkUserQuery = "select * from userinformation where roleid=2";
+		
 		include("adminclass.php");
-		/*$dbObj = new DBController();
-		$result = $dbObj->runQuery($checkUserQuery);*/
+		
 		$adminObj1 = new Admin();
 		$result = $adminObj1->listUsers();
-		//print_r($result);
+		
 
 		echo "<h3>Registered users are :".sizeof($result)."</h3>";
 		if (sizeof($result)>0) {
@@ -42,6 +41,18 @@ session_start();
 					<th>Email</th>
 					<th>Phone Number</th>
 				</tr>";
+
+			foreach ($variable as $key => $value) {
+				# code...
+			}
+
+
+
+
+
+
+
+
 
 			foreach ($result as $key => $value) { 
 			echo "<tr> "	;

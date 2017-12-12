@@ -1,5 +1,5 @@
 <?php
-include("dbconnect.php");
+include("dbconnection.php");
 class UserAdmin 
 {
 	protected $name;

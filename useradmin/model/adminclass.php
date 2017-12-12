@@ -2,7 +2,7 @@
 /**
 * Admin class
 */
-include("userabstract.php");
+include("../model/userabstract.php");
 class Admin extends UserAdmin
 {
 	
@@ -124,7 +124,7 @@ class Admin extends UserAdmin
 	public function information($id)
 	{
 		$dbObj = new DBController();
-		$userQuery = "select username,phonenumber,email,contrycode,roleid from userinformation where userid =$id";
+		$userQuery = "select * from userinformation where userid =$id";
 		try
 		{
 			$result = $dbObj->runQuery($userQuery);
@@ -170,6 +170,22 @@ class Admin extends UserAdmin
 				
 				}
 			return $flag;
+	}
+	public function allUsers()
+	{
+		$dbObj = new DBController();
+		$userQuery = "select * from userinformation";
+		try
+		{
+			$result = $dbObj->runQuery($userQuery);
+			if(sizeof($result)>0)
+			{
+				return $result;
+			}
+		}
+		catch(Exception $e){
+			//echo $e->getMessage();
+		}
 	}
 }
 ?>

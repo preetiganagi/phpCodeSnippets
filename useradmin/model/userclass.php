@@ -82,10 +82,10 @@ class User extends UserAdmin
             return false;
         }
 	}
-	public function information($id)
+	public function information($name)
 	{
 		$dbObj = new DBController();
-		$userQuery = "select username,phonenumber,email,contrycode from userinformation where userid =$id";
+		$userQuery = "select * from userinformation where username =$name";
 		try
 		{
 			$result = $dbObj->runQuery($userQuery);

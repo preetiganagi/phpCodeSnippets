@@ -7,17 +7,6 @@ session_start();
 <head>
 	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 	<title></title>
-	<!-- <script type="text/javascript">
-		$(document).ready(function(){
-    		$(#disableUser).click(function(){
-       		 	$.ajax({
-       		 		url :"registredUsers.php";
-       		 		success:
-
-       		 	})
-   		 });
-	});
-	</script> -->
 </head>
 <body>
 	<?php

@@ -5,14 +5,14 @@
 </head>
 <body>
 
-<form method="post" action="">
+<form method="post" action="index.php?action=login">
     Name: <input type="text" name="name">
     <br> <br>
     Password: <input type="password" name="password" >
     <?php echo $passwordErr; ?>
     <br><br>
    
-    <input type="submit" value="Login"></a><br>
+    <input type="submit" value="Login" name="adminLoginSubmit" ><br>
  </form>
  
 <?php $msg=$_GET['msg'];

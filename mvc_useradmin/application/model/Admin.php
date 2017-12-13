@@ -1,14 +1,25 @@
 <?php
-/**
-* Admin class
-*/
-include("../model/userabstract.php");
+
+namespace Compassite\model;
+
+use Compassite\model\UserAdmin;
+use Compassite\model\DBConnection;
+
 class Admin extends UserAdmin
 {
-	
+	/**
+	* Admin class
+	*/
+	const USERID = 2;	
 	function __construct($name=null,$email=null,$phNum=null,$password=null,$roleid=null,$concode=null,$status = null)
 	{
 		parent:: __construct($name,$email,$phNum,$password,$roleid,$concode,$status);
+	}
+	
+
+	public function getModelData()
+	{
+		echo "Hello Buddy! I am here";
 	}
 	public function getRegisterId($name)
 	{
@@ -19,7 +30,7 @@ class Admin extends UserAdmin
 		return $res;
 
 	}
-	public function listUsers()
+	/*public function listUsers()
 	{
 		$dbObj = new DBConnection();
 		$userQuery = "select userid,username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = 2";
@@ -28,7 +39,15 @@ class Admin extends UserAdmin
 		{
 			
 		}*/
-		return $result;
+		//return $result;
+	//}*/
+	function listUsers()
+	{
+			$dbObj = new DBConnection();
+			 $userQuery = $dbObj->pdo->prepare("select userid,username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = 2");
+			
+				return $userQuery->execute();
+
 	}
 	public function listAdmins($name)
 	{
@@ -41,7 +60,7 @@ class Admin extends UserAdmin
 		}*/
 		return $result;
 	}
-	public function removeUsers($name)
+	/*public function removeUsers($name)
 	{
 		$dbObj = new DBConnection();
 		$userQuery = " DELETE FROM userinformation WHERE username='$name'";
@@ -50,11 +69,27 @@ class Admin extends UserAdmin
 		{
 			return true;
 		}
-		else
-		{
+		
 			return false;
-		}
-	}
+		
+	}*/
+	public function removeUsers($name)
+	{
+		$name=$removeUsers->getName();
+		$password=$removeUsers->getPassword();
+		$email=$removeUsers->getEmail();
+
+	    $removeQuery = $this->pdo->prepare("DELETE FROM userinformation 
+	    			WHERE username='".$name."'");
+	  
+		$removeQuery->bindParam(':username', $name);
+		$removeQuery->bindParam(':password', $password);
+		$removeQuery->bindParam(':email', $email);
+
+	$removeQuery->execute();
+
+}
+
 	public function makeAdmin($name)
 	{
 		$dbObj = new DBConnection();
@@ -64,10 +99,9 @@ class Admin extends UserAdmin
 		{
 			return true;
 		}
-		else
-		{
+		
 			return false;
-		}
+		
 	}
 	public function removeAdmin($name)
 	{
@@ -78,10 +112,9 @@ class Admin extends UserAdmin
 		{
 			return true;
 		}
-		else
-		{
+		
 			return false;
-		}
+		
 	}
 	public function changeStatus($name)
 	{
@@ -92,10 +125,7 @@ class Admin extends UserAdmin
 		{
 			return true;
 		}
-		else
-		{
 			return false;
-		}
 	}
 	public function changeStatusEnable($name)
 	{
@@ -106,10 +136,9 @@ class Admin extends UserAdmin
 		{
 			return true;
 		}
-		else
-		{
+		
 			return false;
-		}
+		
 	}
 
 
@@ -137,43 +166,9 @@ class Admin extends UserAdmin
 			//echo $e->getMessage();
 		}
 	}
-	public function editProfile($id,$name=null,$email=null,$phNum=null)
-	{
-		$flag = false;
-		$dbObj = new DBConnection();
-		//$uid = $this->getRegisterId($preName);
-	
-			if($name == null && $email == null && $phNum == null){
-				return false;
-			}
-			elseif ($email == null && $phNum == null) {
-			$userQuery = " UPDATE userinformation SET username ='$name' WHERE userid=$id";
-			}
-			elseif($email == null)
-			{
-			$userQuery = " UPDATE userinformation SET username ='$name', phonenumber ='$phNum' WHERE userid=$id";
-			}
-			elseif ($phNum == null) {
-				$userQuery = " UPDATE userinformation SET username ='$name', email ='$email' WHERE userid=$id";
-			}
-			elseif ($name == null) {
-				$userQuery = " UPDATE userinformation SET email ='$email',phonenumber ='$phNum' WHERE userid=$id";
-			}
-			else
-			{
-				$userQuery = " UPDATE userinformation SET username ='$name',email ='$email',phonenumber ='$phNum' WHERE userid=$id";
-			}
-				$result = $dbObj->runInsertQuery($userQuery);
-				if($result)
-				{
-				$flag =  true;
-				
-				}
-			return $flag;
-	}
-	public function editProfile($uid,$name=null,$email=null,$contact=null) {
+	public function editProfile($uid,$name=null,$email=null,$phonenumber=null) {
         
-        $dbClass = new DBConnection();
+        $dbObj = new DBConnection();
 
         if($name) {
             $subqry="username='$name',";
@@ -182,23 +177,24 @@ class Admin extends UserAdmin
             $subqry.="email='$email',";
         }
         if($contact) {
-            $subqry.="contact=$contact";
+            $subqry.="phonenumber=$phonenumber";
         }
-	public function allUsers()
-	{
-		$dbObj = new DBConnection();
-		$userQuery = "select * from userinformation";
-		try
+
+        $userQuery = "UPDATE userinformation set ".$subqry." where userid=".$uid."";
+
+        if($dbObj->runQuery($userQuery)) {
+       
+            return true;
+        }      
+        return false;
+    }
+		function allUsers()
 		{
-			$result = $dbObj->runQuery($userQuery);
-			if(sizeof($result)>0)
-			{
-				return $result;
-			}
+			$dbObj = new DBConnection();
+			 $userQuery = $dbObj->pdo->prepare("select * from userinformation");
+			
+				return $userQuery->execute();
+
 		}
-		catch(Exception $e){
-			//echo $e->getMessage();
-		}
-	}
 }
 ?>

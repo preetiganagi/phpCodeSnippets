@@ -1,5 +1,7 @@
 <?php
-include("dbconnection.php");
+namespace Compassite\model;
+
+use Compassite\model\DBConnection;
 class UserAdmin 
 {
 	protected $name;

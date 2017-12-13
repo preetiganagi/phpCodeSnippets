@@ -1,26 +1,25 @@
 <?php
+
+namespace Compassite\model;
+
 class DBConnection {
 	private $host = "localhost";
 	private $user = "root";
 	private $password = "compass";
-	private $database = "adminuser";
+	private $database = "adminuserdatabase";
 	private $conn;
 	public $pdo;
 	
 	public function __construct() 
 	{
-		$host = "localhost";
-		$database = "adminuser";
-		$user = "root";
-		$password = "compass";
-		$this->conn = $this->connectDB();
-
+		/*$this->conn = $this->connectDB();
+*/
 		 try
         {
-            $this->pdo = new PDO("mysql:host=$host;dbname=$database", $user, $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo = new \PDO($host,$database,$user, $password);
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
-        catch(PDOException $e)
+        catch(\PDOException $e)
         {
             return $e->getMessage();
         }
@@ -32,7 +31,7 @@ class DBConnection {
     }
 	
 	
-	function connectDB() 
+	/*function connectDB() 
 	{
 		$conn = mysqli_connect($this->localhost,
 								$this->user,$this->password,
@@ -43,9 +42,9 @@ class DBConnection {
 		}
 
 		return $conn;
-	}
+	}*/
 	
-	function runQuery($query) 
+	/*function runQuery($query) 
 	{
 		$result = mysqli_query($this->conn,$query);
 		while($row=mysqli_fetch_assoc($result))
@@ -65,6 +64,6 @@ class DBConnection {
 	function runInsertQuery($query) {
 		$result = mysqli_query($this->conn,$query);
 		return $result;
-	}
+	}*/
 }
 ?>

@@ -1,7 +1,8 @@
-
 <?php
 
-include("userabstract.php");
+namespace Compassite\model;
+
+use Compassite\model\UserAdmin;
 /**
 * user class
 */
@@ -13,11 +14,13 @@ class User extends UserAdmin
 	{
 		parent:: __construct($name,$email,$phNum,$password,$roleid,$concode,$status);
 	}
+
 	public function changePassword($pwd)
 	{
 		
 
 	}
+	
 	public function getRegisterId($name)
 	{
 		$dbObj = new DBController();
@@ -100,5 +103,3 @@ class User extends UserAdmin
 	}
 	
 }
-
-?>

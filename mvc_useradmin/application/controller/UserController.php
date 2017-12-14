@@ -44,17 +44,19 @@ class UserController
         {
             echo "<h2>logged out successfully</h2>";
         }
-        require("../view/userLogin.php");
+        require("/var/www/html/phpCodeSnippets/mvc_useradmin/application/view/userLogin.php");
     }
 
     public function getView()
     {
-        require("/var/www/html/phpCodeSnippets/mvc_useradmin/application/view/userRegistration.php");
+       
     }
 
-    public function validation()
+    public function userInfoValidation()
     {
-   
+
+        require("/var/www/html/phpCodeSnippets/mvc_useradmin/application/view/userRegistration.php");
+
         $nameErr = $emailErr =$pwdErr = $cpwdErr =  $phoneNumberErr = $contryCode = "";
         $name = $email =$pwd = $cpwd = $phoneNumber = $contryCode ="";
         

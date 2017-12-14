@@ -30,25 +30,18 @@ class Admin extends UserAdmin
 		return $res;
 
 	}
-	/*public function listUsers()
+	public function listUsers()
 	{
-		$dbObj = new DBConnection();
+		/*$dbObj = new DBConnection();
 		$userQuery = "select userid,username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = 2";
 		$result = $dbObj->runQuery($userQuery);
-		/*if(sizeof($result)>0)
+		if(sizeof($result)>0)
 		{
 			
-		}*/
-		//return $result;
-	//}*/
-	function listUsers()
-	{
-			$dbObj = new DBConnection();
-			 $userQuery = $dbObj->pdo->prepare("select userid,username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = 2");
-			
-				return $userQuery->execute();
-
+		}
+	return $result;*/
 	}
+	
 	public function listAdmins($name)
 	{
 		$dbObj = new DBConnection();
@@ -166,6 +159,7 @@ class Admin extends UserAdmin
 			//echo $e->getMessage();
 		}
 	}
+
 	public function editProfile($uid,$name=null,$email=null,$phonenumber=null) {
         
         $dbObj = new DBConnection();
@@ -188,13 +182,16 @@ class Admin extends UserAdmin
         }      
         return false;
     }
-		function allUsers()
-		{
-			$dbObj = new DBConnection();
-			 $userQuery = $dbObj->pdo->prepare("select * from userinformation");
-			
-				return $userQuery->execute();
 
-		}
+
+
+	function checkValidation($name,$password)
+	{
+		$dbObj = new DBConnection();
+		
+			$stmt = $dbObj->pdo->prepare("select * from userinformation where username='$name' and password='$password'");
+			$stmt->execute();
+			return $stmt->fetchAll();
+		 
+	}
 }
-?>

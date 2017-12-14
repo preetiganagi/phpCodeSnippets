@@ -1,6 +1,6 @@
 <?php
 include("../model/adminclass.php");
- function adminLoginValidation(){
+ function adminLoginValidation() {
 	if ($_SERVER["REQUEST_METHOD"] == "POST") 
     {
     	$name = $_POST['name'];
@@ -16,9 +16,7 @@ include("../model/adminclass.php");
 						$_SESSION['userName'] = $name;
 						header("location:../view/usersInformation.php");
 					}
-					else {
-						$passwordErr ="not valid admin";
-					}
+					$passwordErr ="not valid admin";
 				}
 				else {
 					$passwordErr ="not matched";
@@ -55,13 +53,13 @@ function usersInformation(){
 					if(isset($_POST['makeadmin']))
 					{
 						$success=$adminObj2->makeAdmin($_POST['adminname']);
-						if($success){
+						if($success) {
 							$addAdminMsg=" added admin";
 							$to      = 'preetiganagi@gmail.com';
-						$subject = 'status ';
-						$message = 'u r admin now';
-						$headers = 'From:preetiganagi777@gmail.com';
-						mail($to, $subject, $message, $headers);
+							$subject = 'status ';
+							$message = 'u r admin now';
+							$headers = 'From:preetiganagi777@gmail.com';
+							mail($to, $subject, $message, $headers);
 						}
 						$msg ="  not possible";
 						

@@ -10,10 +10,6 @@ class AdminController
 
 	public function getMyview()
 	{
-	
-		require "/var/www/html/phpCodeSnippets/mvc_useradmin/application/view/adminLogin.php";
-
-
 		$adminObj = new Admin();
 
 		$adminObj->getModelData();
@@ -29,9 +25,10 @@ class AdminController
 		    	$name = $_POST['name'];
 		    	$password = md5($_POST['password']);
 				$result =$adminObj->checkValidation($name,$password);
+				//print_r($result);
 				if(($result)>0)
 				{	
-					if($result['roleid'] == ADMINROLE) 
+					if($result['roleid'] == 1) 
 					{
 						session_start();
 						$_SESSION['userName'] = $name;
@@ -45,6 +42,7 @@ class AdminController
 				}
 			}
 		}
+		require "/var/www/html/phpCodeSnippets/mvc_useradmin/application/view/adminLogin.php";
 	}		
 
 	function getUserInformation()

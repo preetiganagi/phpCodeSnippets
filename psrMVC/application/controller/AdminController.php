@@ -11,6 +11,8 @@ class AdminController
 	public function getMyview()
 	{
 		$adminObj = new Admin();
+
+		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/adminLogin.php";
 		
 		if ($_SERVER["REQUEST_METHOD"] == "POST") 
 		{   
@@ -22,21 +24,26 @@ class AdminController
 				}	
 		    	$name = $_POST['name'];
 		    	$password = md5($_POST['password']);
-				$adminInfo =$adminObj->checkValidation($name,$password);
+		    	try
+		    	{
+		    		$adminInfo =$adminObj->checkValidation($name,$password);
 				
-				foreach ($adminInfo as $value) 
-				{
-					if($value['roleid'] == 1) 
+					foreach ($adminInfo as $value) 
 					{
-						$_SESSION['adminName']=$name;
-						header("location:index.php?action=usersInformation");
-					}	
-					$passwordErr ="not valid admin";
-				}
-				
+						if($value['roleid'] == self::ADMINROLE) 
+						{
+							$_SESSION['adminName']=$name;
+							header("location:index.php?action=usersInformation");
+						}	
+						
+					}
+		    	} catch (Exception $e) {
+
+		    		$passwordErr ="not valid admin".$e->getMessage(); 
+
+		    	}
 			}
 		}
-		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/adminLogin.php";
 	}
 		
 	function getUserInformation()
@@ -45,56 +52,58 @@ class AdminController
 		$allUsers = $adminObject->listUsers();
 		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/usersInformation.php";	
 
-				if(isset($_POST['submitDisable']))
-				{
-					$deleted=$adminObject->changeStatus($value['username']);
-						if($deleted)
-						{
-							$msgDisable = " disabled";
-						}
-							$msgDisable = "  not possible";
-							
-				}
-				if(isset($_POST['makeadmin']))
-				{
-					$success=$adminObject->makeAdmin($value['username']);
-					if($success){
-						$makeAdminMsg = "admin added";
+			if(isset($_POST['submitDisable']))
+			{
+				$deleted=$adminObject->changeStatus($value['username']);
+					if($deleted)
+					{
+						$msgDisable = " disabled";
 					}
+						$msgDisable = "  not possible";
+							
+			}
+			if(isset($_POST['makeadmin']))
+			{
+				$success=$adminObject->makeAdmin($value['username']);
+				if($success){
+					$makeAdminMsg = "admin added";
+				}
 						$msg ="  not possible";
-				}
+			}
 
-				if(isset($_POST['submitEnable']))
-				{
-					$enabled=$adminObject->changeStatusEnable($value['username']);
-						if($enabled){
-							$enableMsg = " Enabled";
-						}
+			if(isset($_POST['submitEnable']))
+			{
+				$enabled=$adminObject->changeStatusEnable($value['username']);
+					if($enabled){
+						$enableMsg = " Enabled";
+					}
 						$enableMsg =  "  not possible";
-				}
-				if(isset($_POST['delete']))
-				{
-					$enabled=$adminObject->removeUsers($value['username']);
-						if($enabled){
+			}
 
-							$deleteMsg= " User deleted";
+			if(isset($_POST['delete']))
+			{
+				$enabled=$adminObject->removeUsers($value['username']);
+					if($enabled){
 
-						}
+						$deleteMsg= " User deleted";
+
+					}
+
 					$deleteMsg= "can not delete";
-				}
+			}
 
 			if(sizeof($allUsers) <= 0) {
 
 				$noUserMsg = "no registered users";
+
 			}	
-		}
+	}
 
-		function adminLogout()
-		{
+	function adminLogout()
+	{
 
-			session_destroy();
+		session_destroy();
 
-			require "/var/www/html/phpCodeSnippets/psrMVC/application/view/logout.php";
-		}
-
+		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/logout.php";
+	}
 }

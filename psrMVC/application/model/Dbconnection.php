@@ -18,13 +18,13 @@ class DBConnection
 	
 	public function __construct() 
 	{
-		echo "init DB connection";
 		try
         {
         	$this->pdo = new \PDO("mysql:host=localhost;dbname=adminuserdatabase",
         		"root", "compass");
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        } catch(\PDOException $e){
+        } catch(\PDOException $e) {
+
              $e->getMessage();
         }
 

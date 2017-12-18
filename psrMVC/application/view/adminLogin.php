@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<form method="post" action="index.php?action=usersInformation">
+<form method="post" action="index.php?action=adminLogin">
     Name: <input type="text" name="name">
     <br> <br>
     Password: <input type="password" name="password" >
@@ -13,10 +13,6 @@
     <br><br>
    
     <input type="submit" value="Login" name="adminLoginSubmit" ><br>
- </form>
- 
-<?php $msg=$_GET['msg'];
-	echo $msg;
-	?>
+</form>
 </body>
 </html>

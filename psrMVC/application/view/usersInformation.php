@@ -16,33 +16,42 @@
 				<th>status</th>
 
 			</tr>
-			<form method = 'post' action="index.php?action=usersInformation">
-			<?php foreach ($allUsers as $value): ?> 
+			<form method = 'post' action="index.php?page=userInformation">
+			<?php foreach ($allUsers as $user): ?> 
 			<tr>
-				<td><?= $value['username']; ?></td>
-				<td><?= $value['email']; ?></td>
-				<td><?= $value['phonenumber']; ?></td>
-				<td><a href='profileEditUser.php?id=<?= $value['userid']; ?>'>&nbsp;edit&nbsp;</a></td>
+				<td><?=$user['username']; ?></td>
+				<td><?=$user['email']; ?></td>
+				<td><?=$user['phonenumber']; ?></td>
+				<td><a href="profileEditUser.php?id=<?=$user['userid']?>">&nbsp;edit&nbsp;</a></td>
 			
 				<td><input type='submit' id='makeAdmin' name ='makeadmin' value='make admin'></td><?= $makeAdminMsg; ?>
 				
 				<td><input type='submit' id='deleteUser' name ='delete' value=' Delete'></td><?= $deleteMsg; ?>
 				
-				<?php if($value['userstatus'] == 1){ ?>
+				<?php if($user['userstatus'] == 1){ ?>
 				<td><?= "active" ?></td>
-				
-				<td><input type='submit' name ='submitDisable' value='desable'></td><?= $msgDisable; ?>
-				
+				</form>	
+				<td>
+					<form action="index.php?page=userInformation&action=disable" method="POST">
+					<input type="hidden" name='userid' value='<?= $user['userid'] ?>'>
+					<input type='submit' name ='submitDisable' value='disable'>
+					</form>
+				</td><?= $msgDisable; ?>
+
 				<?php }else{ ?> 
 
 				<td><?= " not active" ?></td>
 				
-				<td><input type='submit' id='enableUser' name ='submitEnable' value='enable'></td><?= $enableMsg; ?>
+				<td>
+					<form action="index.php?page=userInformation&action=enable">
+					<input type='submit' id='enableUser' name ='submitEnable' value='enable'>
+					</form>
+				</td><?= $enableMsg; ?>
 			
 			<?php  } endforeach; ?>
 
 			</tr>
-			</form>	
+			
 			</table>
 			
 <br>

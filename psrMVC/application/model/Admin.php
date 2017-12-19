@@ -7,13 +7,10 @@ use Compassite\model\Dbconnection;
 
 class Admin extends UserAdmin
 {
-	/**
-	* Admin class
-	*/
 	const USERID = 2;	
 	const ADMINROLE = 1;
 	const DISABLE = 0;
-	const ENABLE = 0;
+	const ENABLE = 1;
 	
 	function __construct($name=null,$email=null,$phNum=null,$password=null,$roleid=null,$concode=null,$status = null)
 	{
@@ -31,15 +28,16 @@ class Admin extends UserAdmin
 	}
 	public function listUsers()
 	{
-		$dbObj = new DBConnection();
-
-		$userQuery = "select userid,username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = ".self::USERID."";
-
-		$listUsers = $dbObj->pdo->prepare($userQuery);
-
-		$listUsers->execute();
-
-		return $listUsers->fetchAll();
+		try
+		{
+			$dbObj = new DBConnection();
+			$userQuery = "select userid,username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = ".self::USERID."";
+			$listUsers = $dbObj->pdo->prepare($userQuery);
+			$listUsers->execute();
+			return $listUsers->fetchAll();			
+		} catch (\Exception $e) {
+			throw new \Exception("No Users Found", 0);	
+		}
 		
 	}
 	
@@ -59,31 +57,22 @@ class Admin extends UserAdmin
 	public function removeUsers($name)
 	{
 		$dbObj = new DBConnection();
-
 	    $removeQuery = $dbObj->pdo->prepare("DELETE FROM userinformation 
-	    			WHERE username='".$name."'");
-	  
+	    			WHERE username='".$name."'");	  
 		if ($removeQuery->execute()) {
-
 			return true;
 		}
 		else {
-
-			throw new Exception("can not delete", 0);	
+			throw new \Exception("can not delete", 0);	
 		}
-
 	}
 
 	public function makeAdmin($name)
 	{
 		$dbObj = new DBConnection();
-
 		$userQuery="UPDATE userinformation SET roleid=".self::ADMINROLE." WHERE username='".$name."'";
-
 		$success = $dbObj->pdo->prepare($userQuery);
-
-		$success->execute();
-				
+		$success->execute();				
 		return $success;
 	}
 	public function removeAdmin($name)
@@ -95,96 +84,43 @@ class Admin extends UserAdmin
 		{
 			return true;
 		}
-		
 			return false;
-		
-	}
-	public function changeStatus($name)
-	{
-		$dbObj = new DBConnection();
-
-		$userQuery="UPDATE userinformation SET userstatus=".self::DISABLE." WHERE username='".$name."'";
-
-		$success = $dbObj->pdo->prepare($userQuery);
-
-		$success->execute();
-
-		return $success;
-		
-	}
-	public function changeStatusEnable($name)
-	{
-		$dbObj = new DBConnection();
-
-		$userQuery="UPDATE userinformation SET userstatus=".self::ENABLE." WHERE username='".$name."'";
-
-		$success = $dbObj->pdo->prepare($userQuery);
-
-		$success->execute();
-		
-		return $success;
 	}
 
-
-	public function findAdminId($name)
+	public function changeStatusDisable($id)
 	{
-		$dbObj = new DBConnection();
-		$adminQuery = "select roleid from userinformation where username='$name'";
-		$result = $dbObj->runInsertQuery($adminQuery);
-		$id = mysqli_fetch_assoc($result);
-		return $id;
-	}
-
-	public function information($id)
-	{
-		$dbObj = new DBConnection();
-		$userQuery = "select * from userinformation where userid =$id";
-		$result = $dbObj->runQuery($userQuery);
-		if(sizeof($result)>0)
+		try
 		{
-			return $result;
-		}
-		else{
-
-			throw new Exception("no info found", 1);
-		}
+			$dbObj = new DBConnection();
+			$userQuery="UPDATE userinformation SET userstatus=".self::DISABLE." WHERE userid=$id";
+			$success = $dbObj->pdo->prepare($userQuery);
+			return $success->execute();
+		} catch(\Exception $e){
+			throw new \Exception("can not disable User", 0);	
+		}	
 	}
 
-	public function editProfile($uid,$name=null,$email=null,$phonenumber=null) {
-        
-        $dbObj = new DBConnection();
-
-        if($name) {
-            $subqry="username='$name',";
-        }
-        if($email) {
-            $subqry.="email='$email',";
-        }
-        if($contact) {
-            $subqry.="phonenumber=$phonenumber";
-        }
-        try
-        {
-        	$userQuery = "UPDATE userinformation set ".$subqry." where userid=".$uid."";
-
-        	if($dbObj->runQuery($userQuery)) {
-       
-            	return true;
-       		}
-
-        }else {
-        	
-        	return false;
-		}   
-    }
+	public function changeStatusEnable($id)
+	{
+		try
+		{
+			$dbObj = new DBConnection();
+			$userQuery="UPDATE userinformation SET userstatus=".self::ENABLE." WHERE userid=$id";
+			$success = $dbObj->pdo->prepare($userQuery);
+			$success->execute();		
+			return $success;
+		} catch(\Exception $e) {
+			throw new \Exception("can not enable user", 0);
+			
+		}
+		
+	}
 
 	function checkValidation($name,$password)
 	{
 	
 		$dbObj = new DBConnection();
-
 		$vlaidateQuery = $dbObj->pdo->prepare("select * from userinformation where username='".$name."' and password='".$password."'");
-
 		$vlaidateQuery->execute();
 		if ($validUser = $vlaidateQuery->fetchAll()) {
 
@@ -192,7 +128,7 @@ class Admin extends UserAdmin
 		}
 		else{
 
-			throw new Exception("no such user", 0);
+			throw new \Exception("no such admin", 0);
 		}	
 	}
 }

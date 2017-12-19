@@ -2,8 +2,9 @@
 namespace Compassite\model;
 
 use Compassite\model\Dbconnection;
+use Compassite\model\UserAdminFunctions;
 
-class UserAdmin 
+class UserAdmin implements UserAdminFunctions
 {
 	protected $name;
 	protected $email;
@@ -64,13 +65,40 @@ class UserAdmin
 	{
 		return $this->roleid;
 	}
-	public function display()
+
+	public function editProfile($uid,$name=null,$email=null,$phonenumber=null) {
+        
+        $dbObj = new DBConnection();
+
+        if($name) {
+            $subqry="username='$name',";
+        }
+        if($email) {
+            $subqry.="email='$email',";
+        }
+        if($contact) {
+            $subqry.="phonenumber=$phonenumber";
+        }
+        $userQuery = "UPDATE userinformation set ".$subqry." where userid=".$uid."";
+		if($dbObj->runQuery($userQuery)) {
+      		return true;
+		} else {
+        	throw new \Exception("can not update profile", 0);
+		}   
+    }
+
+	public function information($name)
 	{
-		echo "<h3>Name is:".$this->name;
-		echo "<br>Email is:".$this->email;
-		echo "<br>Phone Number is:".$this->phoneNumber."</h3>";
+		$dbObj = new DBConnection();
+		$userQuery = "select * from userinformation where username ='$name'";
+		$result = $dbObj->runQuery($userQuery);
+		if(sizeof($result)>0)
+		{
+			return $result;
+		}
+		else{
 
-
-	}
-	
+			throw new \Exception("no information found", 0);
+		}
+	}	
 }	

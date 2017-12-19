@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<form method="post" action="index.php?action=adminLogin">
+<form method="post" action="index.php?page=adminLogin">
     Name: <input type="text" name="name">
     <br> <br>
     Password: <input type="password" name="password" >

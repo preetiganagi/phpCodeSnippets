@@ -21,7 +21,6 @@ class UserController
 
             if(sizeof($result)>0)
             {   
-
                 foreach ($result as $key => $value) 
                 {
                     if($value['username'] == $name && $value['password'] == md5($_POST['password'])) 
@@ -47,16 +46,8 @@ class UserController
         require("/var/www/html/phpCodeSnippets/mvc_useradmin/application/view/userLogin.php");
     }
 
-    public function getView()
-    {
-       
-    }
-
     public function userInfoValidation()
     {
-
-        require("/var/www/html/phpCodeSnippets/mvc_useradmin/application/view/userRegistration.php");
-
         $nameErr = $emailErr =$pwdErr = $cpwdErr =  $phoneNumberErr = $contryCode = "";
         $name = $email =$pwd = $cpwd = $phoneNumber = $contryCode ="";
         
@@ -131,7 +122,8 @@ class UserController
                 echo "not registered";
             }
         }
-   }
+        require("/var/www/html/phpCodeSnippets/mvc_useradmin/application/view/userRegistration.php");
+    }
 
 }
 

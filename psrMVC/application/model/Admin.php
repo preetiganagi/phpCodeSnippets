@@ -75,18 +75,7 @@ class Admin extends UserAdmin
 		$success->execute();				
 		return $success;
 	}
-	public function removeAdmin($name)
-	{
-		$dbObj = new DBConnection();
-		$userQuery="UPDATE userinformation SET roleid=".self::USERID." WHERE username='$name'";
-		$result = $dbObj->runInsertQuery($userQuery);
-		if($result)
-		{
-			return true;
-		}
-			return false;
-	}
-
+	
 	public function changeStatusDisable($id)
 	{
 		try

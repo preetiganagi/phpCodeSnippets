@@ -3,14 +3,19 @@
 namespace Compassite\controller;
 
 use Compassite\model\Admin;
+use Compassite\model\UserAdmin;
 
 class AdminController 
 {
 	const ADMINROLE = 1;
+	public $adminObj;
+	function __Construct()
+	{
+		$this->adminObj = new Admin();
+	}
 
 	public function getMyview()
 	{
-		$adminObj = new Admin();
 		if ($_SERVER["REQUEST_METHOD"] == "POST") 
 		{   
 			if(isset($_POST['adminLoginSubmit']))
@@ -23,7 +28,7 @@ class AdminController
 		    	$password = md5($_POST['password']);
 		    	try
 		    	{
-		    		$adminInfo =$adminObj->checkValidation($name,$password);
+		    		$adminInfo =$this->adminObj->checkValidation($name,$password);
 				
 					foreach ($adminInfo as $value) 
 					{
@@ -43,8 +48,7 @@ class AdminController
 		
 	function getUserInformation()
 	{
-		$adminObject = new Admin();
-		$allUsers = $adminObject->listUsers();
+		$allUsers = $this->adminObj->listUsers();
 		if(sizeof($allUsers) <= 0) {
 			$noUserMsg = "no registered users";
 		}
@@ -55,9 +59,8 @@ class AdminController
 	{
 		try
 		{
-			$adminObj = new Admin();
 			if(isset($_POST['submitDisable']))	{
-				$deleted=$adminObj->changeStatusDisable($_POST['userid']);
+				$deleted=$this->adminObj->changeStatusDisable($_POST['userid']);
 				if($deleted) {
 					$msgDisable = " disabled";
 				}		
@@ -72,9 +75,8 @@ class AdminController
 	{	
 		try
 		{
-			$adminObj = new Admin();
 			if(isset($_POST['submitEnable'])) {
-				$enabled=$adminObj->changeStatusEnable($_POST['userid']);
+				$enabled=$this->adminObj->changeStatusEnable($_POST['userid']);
 				if($enabled) {
 					$enableMsg = " Enabled";
 				}
@@ -83,17 +85,15 @@ class AdminController
 		} catch(\Exception $e) {
 			$msgDisable = $e->getMessage();
 		}
-
 	}
 
 	function makeUserToAdmin()
 	{
 		try
 		{
-			$adminObj = new Admin();
 			if(isset($_POST['makeadmin']))
 			{
-				$success=$adminObj->makeAdmin($value['username']);
+				$success=$this->adminObj->makeAdmin($_POST['userid']);
 				if($success){
 					$makeAdminMsg = "admin added";
 				}
@@ -108,10 +108,9 @@ class AdminController
 	{
 		try
 		{
-			$adminObj = new Admin();
 			if(isset($_POST['delete']))
 			{
-				$enabled=$adminObj->removeUsers($value['username']);
+				$enabled=$this->adminObj->removeUsers($_POST['userid']);
 				if($enabled)
 				{
 					$deleteMsg= " User deleted";
@@ -121,6 +120,28 @@ class AdminController
 		} catch(\Exception $e) {
 			$deleteMsg = $e->getMessage();
 		}
+	}
+
+	function editProfileOfUser() {
+		try
+		{
+			$userObj = new UserAdmin();
+			$info= $userObj->information($id);	
+			if(isset($_POST['editProfile']))
+			{
+			    $name = $_POST['name'];
+			    $phoneNumber = $_POST['phoneNumber'];
+			    $email = $_POST['email'];
+				$enabled=$userObj->editProfile($_POST['userid'],$name,$email,$phoneNumber);
+				if($enabled)
+				{
+					$deleteMsg= " Profile edited";
+				}
+			}
+			require "/var/www/html/phpCodeSnippets/psrMVC/application/view/editProfile.php";
+		} catch(\Exception $e) {
+			$deleteMsg = $e->getMessage();
+		}	
 	}		
 
 	function adminLogout()

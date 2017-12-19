@@ -23,7 +23,7 @@ class User extends UserAdmin
 	
 	public function getRegisterId($name)
 	{
-		$dbObj = new DBController();
+		$dbObj = new DBConnection();
 		$userId = "select userid from userinformation where username='$name'";
 		$result = $dbObj->runQuery($userId);
 		return $result;
@@ -34,7 +34,7 @@ class User extends UserAdmin
 	*/
 	public function registration(User $user)
 	{
-		$dbObj = new DBController();
+		$dbObj = new DBConnection();
       	$insertUserInfo = "INSERT INTO userinformation (username,password,phonenumber,email,roleid,contrycode,userstatus) 
         VALUES ('".$user->name."','".$user->password."','".$user->phoneNumber."','".$user->email."','".$user->roleid."','".$user->concode."',".$user->status.")";
 		//echo $insertUserInfo;

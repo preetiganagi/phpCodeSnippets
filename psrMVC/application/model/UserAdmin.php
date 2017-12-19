@@ -79,26 +79,27 @@ class UserAdmin implements UserAdminFunctions
         if($contact) {
             $subqry.="phonenumber=$phonenumber";
         }
-        $userQuery = "UPDATE userinformation set ".$subqry." where userid=".$uid."";
-		if($dbObj->runQuery($userQuery)) {
-      		return true;
-		} else {
+        try
+        {
+        	$userQuery = "UPDATE userinformation set ".$subqry." where userid=".$uid."";
+       		$updateUser = $dbObj->pdo->prepare($userQuery);
+      		$updateUser->execute();
+      		return $updateUser->fetch(PDO::fetch_assoc);
+        } catch(Exception $e) {
         	throw new \Exception("can not update profile", 0);
-		}   
+        }	   
     }
 
 	public function information($name)
 	{
-		$dbObj = new DBConnection();
-		$userQuery = "select * from userinformation where username ='$name'";
-		$result = $dbObj->runQuery($userQuery);
-		if(sizeof($result)>0)
+		try
 		{
-			return $result;
-		}
-		else{
-
+			$dbObj = new DBConnection();
+			$userQuery = "select * from userinformation where username ='$name'";
+			$information = $dbObj->pdo->prepare($userQuery);
+	      	return $information->execute();
+		} catch(Exception $e){
 			throw new \Exception("no information found", 0);
-		}
+		}	
 	}	
 }	

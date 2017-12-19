@@ -22,7 +22,8 @@
 				<td><?=$user['username']; ?></td>
 				<td><?=$user['email']; ?></td>
 				<td><?=$user['phonenumber']; ?></td>
-				<td><a href="profileEditUser.php?id=<?=$user['userid']?>">&nbsp;edit&nbsp;</a></td>
+
+				<td><a href="index.php?page=userInformation&action=profileEdit&id=<?=$user['userid']?>">&nbsp;edit&nbsp;</a></td>
 				
 				<form action="index.php?page=userInformation&action=makeAdmin" method="POST">
 					<input type="hidden" name='userid' value='<?= $user['userid'] ?>'>

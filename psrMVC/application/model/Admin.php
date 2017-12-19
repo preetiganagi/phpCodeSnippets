@@ -106,9 +106,8 @@ class Admin extends UserAdmin
 		{
 			$dbObj = new DBConnection();
 			$userQuery="UPDATE userinformation SET userstatus=".self::ENABLE." WHERE userid=$id";
-			$success = $dbObj->pdo->prepare($userQuery);
-			$success->execute();		
-			return $success;
+			$success = $dbObj->pdo->prepare($userQuery);		
+			return $success->execute();
 		} catch(\Exception $e) {
 			throw new \Exception("can not enable user", 0);
 			

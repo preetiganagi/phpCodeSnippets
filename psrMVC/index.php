@@ -38,7 +38,7 @@ require __DIR__.'/vendor/autoload.php';
  		$viewObj->adminLogout(); 	
   }
 
-  if($_GET['page'] == 'makeAdmin') {
+  if($_GET['page'] == 'userInformation'&& $_GET['action'] =='makeAdmin') {
  		$viewObj = new Compassite\controller\AdminController();
  		$viewObj->makeUserTOAdmin(); 	
   }

@@ -23,10 +23,16 @@
 				<td><?=$user['email']; ?></td>
 				<td><?=$user['phonenumber']; ?></td>
 				<td><a href="profileEditUser.php?id=<?=$user['userid']?>">&nbsp;edit&nbsp;</a></td>
-			
-				<td><input type='submit' id='makeAdmin' name ='makeadmin' value='make admin'></td><?= $makeAdminMsg; ?>
 				
+				<form action="index.php?page=userInformation&action=makeAdmin" method="POST">
+					<input type="hidden" name='userid' value='<?= $user['userid'] ?>'>
+				<td><input type='submit' id='makeAdmin' name ='makeadmin' value='make admin'></td><?= $makeAdminMsg; ?>
+				</form>
+				
+				<form action="index.php?page=userInformation&action=delete" method="POST">
+					<input type="hidden" name='userid' value='<?= $user['userid'] ?>'>
 				<td><input type='submit' id='deleteUser' name ='delete' value=' Delete'></td><?= $deleteMsg; ?>
+				</form>
 				
 				<?php if($user['userstatus'] == 1){ ?>
 				<td><?= "active" ?></td>
@@ -43,7 +49,8 @@
 				<td><?= " not active" ?></td>
 				
 				<td>
-					<form action="index.php?page=userInformation&action=enable">
+					<form action="index.php?page=userInformation&action=enable" method="POST">
+					<input type="hidden" name='userid' value='<?= $user['userid'] ?>'>
 					<input type='submit' id='enableUser' name ='submitEnable' value='enable'>
 					</form>
 				</td><?= $enableMsg; ?>

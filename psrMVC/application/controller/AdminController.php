@@ -7,10 +7,10 @@ use Compassite\model\Admin;
 class AdminController 
 {
 	const ADMINROLE = 1;
-	public Admin $adminObj;
 
 	public function getMyview()
 	{
+		$adminObj = new Admin();
 		if ($_SERVER["REQUEST_METHOD"] == "POST") 
 		{   
 			if(isset($_POST['adminLoginSubmit']))
@@ -55,8 +55,9 @@ class AdminController
 	{
 		try
 		{
+			$adminObj = new Admin();
 			if(isset($_POST['submitDisable']))	{
-				$deleted=$adminObject->changeStatusDisable($_POST['userid']);
+				$deleted=$adminObj->changeStatusDisable($_POST['userid']);
 				if($deleted) {
 					$msgDisable = " disabled";
 				}		
@@ -71,8 +72,9 @@ class AdminController
 	{	
 		try
 		{
+			$adminObj = new Admin();
 			if(isset($_POST['submitEnable'])) {
-				$enabled=$adminObject->changeStatusEnable($_POST['userid']);
+				$enabled=$adminObj->changeStatusEnable($_POST['userid']);
 				if($enabled) {
 					$enableMsg = " Enabled";
 				}
@@ -88,9 +90,10 @@ class AdminController
 	{
 		try
 		{
+			$adminObj = new Admin();
 			if(isset($_POST['makeadmin']))
 			{
-				$success=$adminObject->makeAdmin($value['username']);
+				$success=$adminObj->makeAdmin($value['username']);
 				if($success){
 					$makeAdminMsg = "admin added";
 				}
@@ -105,9 +108,10 @@ class AdminController
 	{
 		try
 		{
+			$adminObj = new Admin();
 			if(isset($_POST['delete']))
 			{
-				$enabled=$adminObject->removeUsers($value['username']);
+				$enabled=$adminObj->removeUsers($value['username']);
 				if($enabled)
 				{
 					$deleteMsg= " User deleted";

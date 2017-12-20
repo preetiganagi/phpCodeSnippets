@@ -3,6 +3,8 @@ session_start();
 
 require __DIR__.'/vendor/autoload.php';
 
+define('APP_PATH', "/var/www/html/Preeti_project");
+
 	if($_GET['action'] == 'login') {
 
 		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/login.php";

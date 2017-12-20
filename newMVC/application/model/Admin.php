@@ -19,7 +19,7 @@ class Admin extends UserAdmin
 	
 	public function getRegisterId($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new Dbconnection();
 		$userId = "select userid from userinformation where username='$name'";
 		$result = $dbObj->runInsertQuery($userId);
 		$res = mysqli_fetch_assoc($result);
@@ -30,7 +30,7 @@ class Admin extends UserAdmin
 	{
 		try
 		{
-			$dbObj = new DBConnection();
+			$dbObj = new Dbconnection();
 			$userQuery = "select userid,username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = ".self::USERID."";
 			$listUsers = $dbObj->pdo->prepare($userQuery);
 			$listUsers->execute();
@@ -43,7 +43,7 @@ class Admin extends UserAdmin
 	
 	public function listAdmins($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new Dbconnection();
 
 		$userQuery = "select username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = ".self::ADMINROLE." and username <>'$name'" ;
 
@@ -56,7 +56,7 @@ class Admin extends UserAdmin
 
 	public function removeUsers($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new Dbconnection();
 	    $removeQuery = $dbObj->pdo->prepare("DELETE FROM userinformation 
 	    			WHERE username='".$name."'");	  
 		if ($removeQuery->execute()) {
@@ -69,7 +69,7 @@ class Admin extends UserAdmin
 
 	public function makeAdmin($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new Dbconnection();
 		$userQuery="UPDATE userinformation SET roleid=".self::ADMINROLE." WHERE username='".$name."'";
 		$success = $dbObj->pdo->prepare($userQuery);				
 		return $success->execute();
@@ -79,7 +79,7 @@ class Admin extends UserAdmin
 	{
 		try
 		{
-			$dbObj = new DBConnection();
+			$dbObj = new Dbconnection();
 			$userQuery="UPDATE userinformation SET userstatus=".self::DISABLE." WHERE userid=$id";
 			$success = $dbObj->pdo->prepare($userQuery);
 			return $success->execute();
@@ -92,7 +92,7 @@ class Admin extends UserAdmin
 	{
 		try
 		{
-			$dbObj = new DBConnection();
+			$dbObj = new Dbconnection();
 			$userQuery="UPDATE userinformation SET userstatus=".self::ENABLE." WHERE userid=$id";
 			$success = $dbObj->pdo->prepare($userQuery);		
 			return $success->execute();
@@ -106,10 +106,10 @@ class Admin extends UserAdmin
 	function checkValidation($name,$password)
 	{
 	
-		$dbObj = new DBConnection();
-		$vlaidateQuery = $dbObj->pdo->prepare("select * from userinformation where username='".$name."' and password='".$password."'");
-		$vlaidateQuery->execute();
-		if ($validUser = $vlaidateQuery->fetchAll()) {
+		//$dbObj = new Dbconnection();
+		$validationQry = $dbObj->pdo->prepare("select * from userinformation where username='".$name."' and password='".$password."'");
+		$validationQry->execute();
+		if ($validUser = $validationQry->fetchAll()) {
 
 			return $validUser;
 		}

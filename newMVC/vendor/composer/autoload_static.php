@@ -20,11 +20,22 @@ class ComposerStaticInit58eea0540018b4b363683eb4c3f672f8
         ),
     );
 
+    public static $classMap = array (
+        'Compassite\\controller\\AdminController' => __DIR__ . '/../..' . '/application/controller/AdminController.php',
+        'Compassite\\controller\\UserController' => __DIR__ . '/../..' . '/application/controller/UserController.php',
+        'Compassite\\model\\Admin' => __DIR__ . '/../..' . '/application/model/Admin.php',
+        'Compassite\\model\\Dbconnection' => __DIR__ . '/../..' . '/application/model/Dbconnection.php',
+        'Compassite\\model\\User' => __DIR__ . '/../..' . '/application/model/User.php',
+        'Compassite\\model\\UserAdmin' => __DIR__ . '/../..' . '/application/model/UserAdmin.php',
+        'Compassite\\model\\UserAdminFunctions' => __DIR__ . '/../..' . '/application/model/UserAdminFunctions.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit58eea0540018b4b363683eb4c3f672f8::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit58eea0540018b4b363683eb4c3f672f8::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit58eea0540018b4b363683eb4c3f672f8::$classMap;
 
         }, null, ClassLoader::class);
     }

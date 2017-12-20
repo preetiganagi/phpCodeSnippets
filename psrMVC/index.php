@@ -3,8 +3,11 @@ session_start();
 
 require __DIR__.'/vendor/autoload.php';
 
+define('APP_PATH',"/var/www/html/Preeti-projects");
+
 	if($_GET['page'] == 'login') {
-		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/login.php";
+
+		require APP_PATH."/psrMVC/application/view/login.php";
   }
 
 	if($_GET['page'] == 'adminLogin') {

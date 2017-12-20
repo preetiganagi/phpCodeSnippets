@@ -2,7 +2,7 @@
 
 namespace Compassite\model;
 
-class DBConnection 
+class DBconnection 
 {
 
 	private $host = "localhost";

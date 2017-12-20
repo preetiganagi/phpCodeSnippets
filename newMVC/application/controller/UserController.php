@@ -43,7 +43,7 @@ class UserController
         {
             echo "<h2>logged out successfully</h2>";
         }
-        require("/var/www/html/phpCodeSnippets/mvc_useradmin/application/view/userLogin.php");
+        require(APP_PATH."/application/view/userLogin.php");
     }
 
     public function userInfoValidation()
@@ -121,7 +121,7 @@ class UserController
                 echo "not registered";
             }
         }
-        require("/var/www/html/phpCodeSnippets/mvc_useradmin/application/view/userRegistration.php");
+        require(APP_PATH."/application/view/userRegistration.php");
     }
 
 }

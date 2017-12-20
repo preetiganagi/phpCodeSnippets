@@ -43,7 +43,7 @@ class AdminController
 				}
 			}
 		}
-		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/adminLogin.php";
+		require APP_PATH."/application/view/adminLogin.php";
 	}
 		
 	function getUserInformation()
@@ -52,7 +52,7 @@ class AdminController
 		if(sizeof($allUsers) <= 0) {
 			$noUserMsg = "no registered users";
 		}
-		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/usersInformation.php";
+		require APP_PATH."/application/view/usersInformation.php";
 	}
 
 	function userDisable()
@@ -139,7 +139,7 @@ class AdminController
 					$deleteMsg= " Profile edited";
 				}
 			}
-			require "/var/www/html/phpCodeSnippets/psrMVC/application/view/editProfile.php";
+			require APP_PATH."/application/view/editProfile.php";
 		} catch(\Exception $e) {
 			$deleteMsg = $e->getMessage();
 		}	
@@ -148,6 +148,6 @@ class AdminController
 	function adminLogout()
 	{
 		$_SESSION['adminName'] = null;
-		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/logout.php";
+		require APP_PATH."/application/view/logout.php";
 	}
 }

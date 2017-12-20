@@ -6,4 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Compassite\\controller\\AdminController' => $baseDir . '/application/controller/AdminController.php',
+    'Compassite\\controller\\UserController' => $baseDir . '/application/controller/UserController.php',
+    'Compassite\\model\\Admin' => $baseDir . '/application/model/Admin.php',
+    'Compassite\\model\\Dbconnection' => $baseDir . '/application/model/Dbconnection.php',
+    'Compassite\\model\\User' => $baseDir . '/application/model/User.php',
+    'Compassite\\model\\UserAdmin' => $baseDir . '/application/model/UserAdmin.php',
+    'Compassite\\model\\UserAdminFunctions' => $baseDir . '/application/model/UserAdminFunctions.php',
 );

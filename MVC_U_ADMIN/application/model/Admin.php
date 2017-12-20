@@ -3,16 +3,17 @@
 namespace Compassite\model;
 
 use Compassite\model\UserAdmin;
-use Compassite\model\Dbconnection;
+use Compassite\model\DBconnection;
 
 class Admin extends UserAdmin
 {
-	/**
-	* Admin class
-	*/
+
 	const USERID = 2;	
+
 	const ADMINROLE = 1;
+
 	const DISABLE = 0;
+
 	const ENABLE = 0;
 	
 	function __construct($name=null,$email=null,$phNum=null,$password=null,$roleid=null,$concode=null,$status = null)
@@ -22,16 +23,21 @@ class Admin extends UserAdmin
 	
 	public function getRegisterId($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
+
 		$userId = "select userid from userinformation where username='$name'";
+
 		$result = $dbObj->runInsertQuery($userId);
+
 		$res = mysqli_fetch_assoc($result);
+
 		return $res;
 
 	}
+
 	public function listUsers()
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
 
 		$userQuery = "select userid,username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = ".self::USERID."";
 
@@ -45,7 +51,7 @@ class Admin extends UserAdmin
 	
 	public function listAdmins($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
 
 		$userQuery = "select username ,email,phonenumber,contrycode,userstatus from userinformation where roleid = ".self::ADMINROLE." and username <>'$name'" ;
 
@@ -58,7 +64,7 @@ class Admin extends UserAdmin
 
 	public function removeUsers($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
 
 	    $removeQuery = $dbObj->pdo->prepare("DELETE FROM userinformation 
 	    			WHERE username='".$name."'");
@@ -76,7 +82,7 @@ class Admin extends UserAdmin
 
 	public function makeAdmin($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
 
 		$userQuery="UPDATE userinformation SET roleid=".self::ADMINROLE." WHERE username='".$name."'";
 
@@ -88,20 +94,21 @@ class Admin extends UserAdmin
 	}
 	public function removeAdmin($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
+
 		$userQuery="UPDATE userinformation SET roleid=".self::USERID." WHERE username='$name'";
+
 		$result = $dbObj->runInsertQuery($userQuery);
-		if($result)
-		{
+
+		if ($result) {
 			return true;
 		}
-		
-			return false;
+		return false;
 		
 	}
 	public function changeStatus($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
 
 		$userQuery="UPDATE userinformation SET userstatus=".self::DISABLE." WHERE username='".$name."'";
 
@@ -114,7 +121,7 @@ class Admin extends UserAdmin
 	}
 	public function changeStatusEnable($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
 
 		$userQuery="UPDATE userinformation SET userstatus=".self::ENABLE." WHERE username='".$name."'";
 
@@ -128,7 +135,7 @@ class Admin extends UserAdmin
 
 	public function findAdminId($name)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
 		$adminQuery = "select roleid from userinformation where username='$name'";
 		$result = $dbObj->runInsertQuery($adminQuery);
 		$id = mysqli_fetch_assoc($result);
@@ -137,7 +144,7 @@ class Admin extends UserAdmin
 
 	public function information($id)
 	{
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
 		$userQuery = "select * from userinformation where userid =$id";
 		$result = $dbObj->runQuery($userQuery);
 		if(sizeof($result)>0)
@@ -152,7 +159,7 @@ class Admin extends UserAdmin
 
 	public function editProfile($uid,$name=null,$email=null,$phonenumber=null) {
         
-        $dbObj = new DBConnection();
+        $dbObj = new DBconnection();
 
         if($name) {
             $subqry="username='$name',";
@@ -163,34 +170,31 @@ class Admin extends UserAdmin
         if($contact) {
             $subqry.="phonenumber=$phonenumber";
         }
-        try
-        {
-        	$userQuery = "UPDATE userinformation set ".$subqry." where userid=".$uid."";
+        
+        $userQuery = "UPDATE userinformation set ".$subqry." where userid=".$uid."";
 
-        	if($dbObj->runQuery($userQuery)) {
+        if($dbObj->runQuery($userQuery)) {
        
-            	return true;
-       		}
-
-        }else {
-        	
-        	return false;
-		}   
+            return true;
+       	}
+        return false;
+		 
     }
 
 	function checkValidation($name,$password)
 	{
 	
-		$dbObj = new DBConnection();
+		$dbObj = new DBconnection();
 
-		$vlaidateQuery = $dbObj->pdo->prepare("select * from userinformation where username='".$name."' and password='".$password."'");
+		$validateQuery = $dbObj->pdo->prepare("select * from userinformation where username='".$name."' and password='".$password."'");
 
-		$vlaidateQuery->execute();
-		if ($validUser = $vlaidateQuery->fetchAll()) {
+		$validateQuery->execute();
+
+		if ($validUser = $validateQuery->fetchAll()) {
 
 			return $validUser;
-		}
-		else{
+			
+		} else {
 
 			throw new Exception("no such user", 0);
 		}	

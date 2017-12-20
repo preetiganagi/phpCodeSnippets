@@ -3,57 +3,81 @@ session_start();
 
 require __DIR__.'/vendor/autoload.php';
 
-	if($_GET['page'] == 'login') {
-		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/login.php";
-  }
+define("APP_PATH","/var/www/html/Preeti_project/newMVC");
 
-	if($_GET['page'] == 'adminLogin') {
+if ($_GET['page'] == 'login') {
+
+    require APP_PATH."/application/view/login.php";
+
+}
+
+if ($_GET['page'] == 'adminLogin') {
+
  		$viewObj = new Compassite\controller\AdminController();
+
  		$viewObj->getMyview(); 	
-  }
+}
   
-	if($_GET['page'] == 'userInformation' && !$_GET['action']) {
+if ($_GET['page'] == 'userInformation' && !$_GET['action']) {
+
  		$viewObj = new Compassite\controller\AdminController();
+
 		$viewObj->getUserInformation(); 	
-  } 
+} 
 
 
-  if ($_GET['page'] == 'userInformation' && $_GET['action'] =='delete') {
+if ($_GET['page'] == 'userInformation' && $_GET['action'] =='delete') {
+
     $viewObj = new Compassite\controller\AdminController();
+
 		$viewObj->deleteUser(); 	
-  }
+}
 
-  if ($_GET['page'] == 'userInformation' && $_GET['action'] =='enable') {
+if ($_GET['page'] == 'userInformation' && $_GET['action'] =='enable') {
+
   	$viewObj = new Compassite\controller\AdminController();
+
 		$viewObj->userEnable(); 	
-  }
+}
 
-  if ($_GET['page'] == 'userInformation'&& $_GET['action'] =='disable') {
+if ($_GET['page'] == 'userInformation'&& $_GET['action'] =='disable') {
+
   	$viewObj = new Compassite\controller\AdminController();
+
 		$viewObj->userDisable(); 	
   }
 
-  if($_GET['page'] == 'adminLogout') {
+if ($_GET['page'] == 'adminLogout') {
+
  		$viewObj = new Compassite\controller\AdminController();
+
  		$viewObj->adminLogout(); 	
-  }
+}
 
-  if($_GET['page'] == 'userInformation'&& $_GET['action'] =='makeAdmin') {
+if ($_GET['page'] == 'userInformation'&& $_GET['action'] =='makeAdmin') {
+
  		$viewObj = new Compassite\controller\AdminController();
- 		$viewObj->makeUserTOAdmin(); 	
-  }
-  if($_GET['page'] == 'userInformation'&& $_GET['action'] =='profileEdit') {
-    $viewObj = new Compassite\controller\AdminController();
-    $viewObj->editProfileOfUser();  
-  }
 
-	if($_GET['page'] == 'user') {
+ 		$viewObj->makeUserTOAdmin(); 	
+}
+if ($_GET['page'] == 'userInformation'&& $_GET['action'] =='profileEdit') {
+
+    $viewObj = new Compassite\controller\AdminController();
+
+    $viewObj->editProfileOfUser();  
+}
+
+if ($_GET['page'] == 'user') {
+
 		$viewObj = new Compassite\controller\UserController();
+
 		$viewObj->loginValidation(); 	
- 	} 
+ } 
   
-  if($_GET['page'] == 'userRegistration') {
+if ($_GET['page'] == 'userRegistration') {
+
  		$viewObj = new Compassite\controller\UserController();
+    
 		$viewObj->userInfoValidation(); 	
-  } 
+} 
   

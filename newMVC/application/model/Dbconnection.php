@@ -2,7 +2,7 @@
 
 namespace Compassite\model;
 
-class DBConnection 
+class Dbconnection 
 {
 
 	private $host = "localhost";
@@ -23,6 +23,7 @@ class DBConnection
         	$this->pdo = new \PDO("mysql:host=localhost;dbname=adminuserdatabase",
         		"root", "compass");
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            
         } catch(\PDOException $e) {
 
              $e->getMessage();

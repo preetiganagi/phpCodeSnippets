@@ -11,8 +11,6 @@ class AdminController
 	public function getMyview()
 	{
 		$adminObj = new Admin();
-
-		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/adminLogin.php";
 		
 		if ($_SERVER["REQUEST_METHOD"] == "POST") 
 		{   
@@ -44,6 +42,7 @@ class AdminController
 		    	}
 			}
 		}
+		require APP_PATH."/MVC_U_ADMIN/application/view/adminLogin.php";
 	}
 		
 	function getUserInformation()
@@ -102,8 +101,7 @@ class AdminController
 	function adminLogout()
 	{
 
-		session_destroy();
 
-		require "/var/www/html/phpCodeSnippets/psrMVC/application/view/logout.php";
+		require APP_PATH."/MVC_U_ADMIN/application/view/logout.php";
 	}
 }
